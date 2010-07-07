@@ -8,7 +8,6 @@ Take a look at the source under lib/connection_adapters/sms_global.rb and use it
 
 ## Contributing
 
-
 * Fork the project.
 * Make your SMS Gateway Adapter.
 * Add tests for it. This is important so I don’t break it in a future version unintentionally.
@@ -16,9 +15,12 @@ Take a look at the source under lib/connection_adapters/sms_global.rb and use it
 * Send me a pull request.
 
 ## Installation
+
     gem install action_sms_gateways
 ### Rails
-Add the following to your Gemfile:
+Place the following in your Gemfile:
 
     gem action_sms_gateways
+
+Copyright (c) 2010 David Wilkie, released under the MIT license
 
