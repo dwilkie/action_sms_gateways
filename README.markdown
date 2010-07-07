@@ -5,7 +5,7 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
 * [SMSGlobal](http://www.smsglobal.com)
 
 ## Creating your own SMS Gateway Adapter
-Take a look at the source under lib/connection_adapters/sms_global.rb and use it as a template for your own adapter. Then why not share it for all to use...
+Take a look at the source under `lib/action_sms_gateways/connection_adapters/sms_global.rb` and use it as a template for your own adapter. Then why not share it for all to use...
 
 ## Contributing
 * Fork the project.

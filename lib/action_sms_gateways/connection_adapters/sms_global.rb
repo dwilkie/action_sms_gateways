@@ -19,8 +19,6 @@ module ActionSms
       def initialize(logger = nil, config = {}) #:nodoc:
         super(logger)
         @config = config.dup
-
-
         @service_url = URI.join(SERVICE_HOST, SERVICE_PATH)
         @service_url.scheme = config[:use_ssl] ? "https" : "http"
       end
