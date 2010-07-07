@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{action_sms_gateways}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Wilkie"]
@@ -15,7 +15,9 @@ Gem::Specification.new do |s|
     "README.markdown"
   ]
   s.files = [
-    "README.markdown",
+    ".gitignore",
+     "MIT-LICENSE",
+     "README.markdown",
      "Rakefile",
      "VERSION",
      "action_sms_gateways.gemspec",
