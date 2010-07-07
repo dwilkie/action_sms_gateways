@@ -23,6 +23,21 @@ module ActionSms
         @service_url.scheme = config[:use_ssl] ? "https" : "http"
       end
 
+      def message_id(data)
+        sms_global_message_id_prefix = "SMSGlobalMsgID:"
+        if data.is_a?(Hash)
+          message_id = data["msgid"]
+          sms_global_message_id_prefix + message_id if message_id
+        elsif data.is_a?(String)
+          match = /#{sms_global_message_id_prefix}\d+/.match(data)
+          match[0] if match
+        end
+      end
+
+      def status(delivery_receipt)
+        delivery_receipt["dlrstatus"]
+      end
+
       def deliver(sms)
         params = {
           :action   => 'sendsms',
