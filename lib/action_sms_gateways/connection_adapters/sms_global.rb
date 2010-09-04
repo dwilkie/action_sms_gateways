@@ -38,6 +38,18 @@ module ActionSms
         delivery_receipt["dlrstatus"]
       end
 
+      def message_text(params)
+        params["msg"]
+      end
+
+      def sender(params)
+        params["from"]
+      end
+
+      def authenticated?(params, secret_token)
+        params["userfield"] == secret_token
+      end
+
       def deliver(sms)
         params = {
           :action   => 'sendsms',
@@ -48,6 +60,9 @@ module ActionSms
           :to       => sms.recipients,
           :text     => sms.body
         }
+        params.merge!(
+          :userfield => sms.user_field
+        ) if sms.respond_to?(:user_field)
         send_http_request(@service_url.to_s, params)
       end
     end
