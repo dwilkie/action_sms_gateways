@@ -46,8 +46,8 @@ module ActionSms
         params["from"]
       end
 
-      def authenticated?(params, secret_token)
-        params["userfield"] == secret_token
+      def authenticate(params)
+        params.delete("userfield") == @config[:authentication_key]
       end
 
       def deliver(sms)
@@ -60,9 +60,14 @@ module ActionSms
           :to       => sms.recipients,
           :text     => sms.body
         }
+        if sms.respond_to?(:userfield)
+          userfield = sms.userfield
+        elsif @config[:authentication_key]
+          userfield = @config[:authentication_key]
+        end
         params.merge!(
-          :userfield => sms.user_field
-        ) if sms.respond_to?(:user_field)
+          :userfield => userfield
+        ) if userfield
         send_http_request(@service_url.to_s, params)
       end
     end
