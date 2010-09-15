@@ -56,9 +56,9 @@ module ActionSms
           :user     => @config[:user],
           :password => @config[:password],
           :maxsplit => 3,
-          :from => (sms.from || "reply2email"),
-          :to       => sms.recipients,
-          :text     => sms.body
+          :from     => sms.respond_to?(:from) ? sms.from : "reply2email",
+          :to       => sms.recipient,
+          :text     => (sms.body || "")
         }
         if sms.respond_to?(:userfield)
           userfield = sms.userfield
