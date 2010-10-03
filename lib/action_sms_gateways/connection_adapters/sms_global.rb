@@ -50,6 +50,10 @@ module ActionSms
         params.delete("userfield") == @config[:authentication_key]
       end
 
+      def delivery_request_successful?(gateway_response)
+        gateway_response =~ /^OK/
+      end
+
       def deliver(sms)
         params = {
           :action   => 'sendsms',
