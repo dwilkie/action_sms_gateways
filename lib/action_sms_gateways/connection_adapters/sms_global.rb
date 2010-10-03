@@ -59,7 +59,7 @@ module ActionSms
           :action   => 'sendsms',
           :user     => @config[:user],
           :password => @config[:password],
-          :maxsplit => 3,
+          :maxsplit => @config[:maxsplit] || 19,
           :from     => sms.respond_to?(:from) ? sms.from : "reply2email",
           :to       => sms.recipient,
           :text     => (sms.body || "")
