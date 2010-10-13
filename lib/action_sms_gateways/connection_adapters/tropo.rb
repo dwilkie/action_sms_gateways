@@ -24,13 +24,16 @@ module ActionSms
       require 'uri'
       require 'tropo_message'
 
+      attr_reader :service_url
+
       SERVICE_HOST = "http://api.tropo.com/1.0"
       SERVICE_PATH = "sessions"
 
       def initialize(config = {}) #:nodoc:
         @config = config.dup
-        @service_url = URI.join(SERVICE_HOST, SERVICE_PATH)
-        @service_url.scheme = config[:use_ssl] ? "https" : "http"
+        service_uri = URI.join(SERVICE_HOST, SERVICE_PATH)
+        service_uri.scheme = config[:use_ssl] ? "https" : "http"
+        @service_url = service_uri.to_s
       end
 
       def message_text(params)
@@ -50,8 +53,8 @@ module ActionSms
         tropo_message.to = sms.recipient
         tropo_message.text = sms.body || ""
         tropo_message.from = sms.from if sms.respond_to?(:from)
-        tropo_message.token = @config.outgoing_token
-        send_http_request(@service_url.to_s, tropo_message.request_xml)
+        tropo_message.token = @config[:outgoing_token]
+        send_http_request(@service_url, tropo_message.request_xml)
       end
 
       private

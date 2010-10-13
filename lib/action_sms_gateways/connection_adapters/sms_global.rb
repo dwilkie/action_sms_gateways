@@ -1,5 +1,4 @@
 require 'action_sms/connection_adapters/abstract_adapter'
-require 'uri'
 
 module ActionSms
   class Base
@@ -22,13 +21,18 @@ module ActionSms
     # class.  You can use this interface directly by borrowing the gateway
     # connection from the Base with Base.connection.
     class SMSGlobalAdapter < AbstractAdapter
+      require 'uri'
+
       SERVICE_HOST = "http://smsglobal.com.au"
       SERVICE_PATH = "http-api.php"
 
+      attr_reader :service_url
+
       def initialize(config = {}) #:nodoc:
         @config = config.dup
-        @service_url = URI.join(SERVICE_HOST, SERVICE_PATH)
-        @service_url.scheme = config[:use_ssl] ? "https" : "http"
+        service_uri = URI.join(SERVICE_HOST, SERVICE_PATH)
+        service_uri.scheme = config[:use_ssl] ? "https" : "http"
+        @service_url = service_uri.to_s
       end
 
       def message_id(data)
@@ -80,7 +84,7 @@ module ActionSms
         params.merge!(
           :userfield => userfield
         ) if userfield
-        send_http_request(@service_url.to_s, params)
+        send_http_request(@service_url, params)
       end
     end
   end
