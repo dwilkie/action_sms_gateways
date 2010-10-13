@@ -36,6 +36,21 @@ module ActionSms
         @service_url = service_uri.to_s
       end
 
+      # message_id and status are for text message delivery receipts only
+      # Tropo does not *yet* send text message delivery receipts, so these
+      # two methods are here for testing purposes
+      def message_id(data)
+        data.is_a?(Hash) ? data["message_id"] : data
+      end
+
+      def status(delivery_receipt)
+        delivery_receipt["status"]
+      end
+
+      def delivery_request_successful?(gateway_response)
+        gateway_response =~ /\<success\>true\<\/success\>/
+      end
+
       def message_text(params)
         session(params)["initial_text"]
       end

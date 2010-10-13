@@ -42,6 +42,27 @@ module TestHelpers
       params.merge!("authentication_key" => @config[:authentication_key]) unless options[:reply] == false
       params
     end
+
+    def sample_delivery_response(options = {})
+      options[:failure] ? "<session><success>false</success><token></token><reason>FAILED TO ROUTE TOKEN</reason></session>" : "<session><success>true</success></session>"
+    end
+
+    def sample_message_id
+      "123e71195545ad204bdd99f2070a7d86"
+    end
+
+    # This is here simply so the current tests pass
+    # Tropo does not *yet* send delivery receipts
+    def delivery_receipt_factory_params(options = {})
+      options[:message_id] ||= '123e71195545ad204bdd99f2070a7d86'
+      options[:status] ||= "delivered"
+      options[:date]   ||= "Mon Oct 11 09:21:38 UTC 2010"
+      {
+        'message_id'=> options[:message_id],
+        'status'=> options[:status],
+        'delivered_at'=> options[:date]
+      }
+    end
   end
 end
 
