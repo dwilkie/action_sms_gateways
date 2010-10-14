@@ -60,9 +60,78 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
     # get message id
     message_id = sms_gateway.message_id(receipt)
 
-## Creating your own SMS Gateway Adapter
+### Service url
 
-Take a look at the source under `lib/action_sms_gateways/connection_adapters/sms_global.rb` and use it as a template for your own adapter.
+    # gets the gateway's api url
+    # ActionSms::Base.connection.service_url
+
+## Testing
+
+When you set: `:environment => "test"` in your configuration, you get some additional test helpers.
+
+    ActionSms::Base.establish_connection(
+      :environment => "test"
+    )
+
+    sms_gateway = ActionSms::Base.connection
+
+    # get sample incoming SMS params
+    sms_gateway.sample_incoming_sms
+
+    # get customized sample incoming SMS params
+    sms_gateway.sample_incoming_sms(
+      :message => "hello",
+      :to => "6128392323",
+      :from => "61289339432",
+      :date => Time.now,
+      :authentic => false          # see configuration
+    )
+
+    # get sample delivery response
+    sms_gateway.sample_delivery_response
+
+    # get sample delivery response (failed)
+    sms_gateway.sample_delivery_response(:failed => true)
+
+    # get sample message id
+    sms_gateway.sample_message_id
+
+    # get sample delivery receipt
+    sms_gateway.sample_delivery_receipt
+
+    # get customized sample delivery receipt
+    sms_gateway.sample_delivery_receipt(
+      :message_id => "12345",
+      :status => "delivered",
+      :error => "some error",
+      :date => Time.now
+    )
+
+## Creating your own adapter
+
+To create your own adapter all you need to do is open up the ActionSms::Base class
+and add a class method named: `my_adapter_connection` which takes a single hash argument of configuration details and returns an instance of your adapter class. For example, lets create an adapter for clickatell:
+
+    # clickatell.rb
+    require 'action_sms/connection_adapters/abstract_adapter'
+
+    module ActionSms
+      class Base
+        def self.clickatell_connection(config)
+          ConnectionAdapters::ClickatellAdapter.new(config)
+        end
+      end
+    end
+
+    module ConnectionAdapters
+      class ClickatellAdapter < AbstractAdapter
+        # define your adapter here ...
+        def initialize(config)
+        end
+      end
+    end
+
+Take a look at the [source](lib/action_sms_gateways/connection_adapters) for more details
 
 ## Installation
 
