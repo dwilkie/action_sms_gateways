@@ -9,8 +9,8 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
 
 ## Configuration
 
-* [SMSGlobal](wiki/SMSGlobal)
-* [Tropo](wiki/Tropo)
+* [SMSGlobal](http://github.com/dwilkie/action_sms_gateways/wiki/SMSGlobal)
+* [Tropo](http://github.com/dwilkie/action_sms_gateways/wiki/Tropo)
 
 ## Usage
 
@@ -144,7 +144,7 @@ and add a class method named: `my_adapter_connection` which takes a single hash 
       end
     end
 
-Take a look at the [source](tree/master/lib/action_sms_gateways/connection_adapters) for more details
+Take a look at the [source](http://github.com/dwilkie/action_sms_gateways/tree/master/lib/action_sms_gateways/connection_adapters/) for more details
 
 ## Installation
 
