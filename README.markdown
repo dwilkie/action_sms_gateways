@@ -9,8 +9,8 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
 
 ## Configuration
 
-* [SMSGlobal](/wiki/SMSGlobal)
-* [Tropo](/wiki/Tropo)
+* [SMSGlobal](wiki/SMSGlobal)
+* [Tropo](wiki/Tropo)
 
 ## Usage
 
