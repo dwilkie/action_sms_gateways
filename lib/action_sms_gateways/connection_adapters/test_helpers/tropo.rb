@@ -1,6 +1,6 @@
 module TestHelpers
   module Tropo
-    def incoming_sms_factory_params(options = {})
+    def sample_incoming_sms(options = {})
       options[:message] ||= "Endia kasdf ofeao"
       options[:to]      ||= "61447100308"
       options[:from]    ||= "61447100399"
@@ -39,7 +39,7 @@ module TestHelpers
           }
         }
       }
-      params.merge!("authentication_key" => @config[:authentication_key]) unless options[:reply] == false
+      params.merge!("authentication_key" => @config[:authentication_key]) unless options[:authentic] == false
       params
     end
 
@@ -53,7 +53,7 @@ module TestHelpers
 
     # This is here simply so the current tests pass
     # Tropo does not *yet* send delivery receipts
-    def delivery_receipt_factory_params(options = {})
+    def sample_delivery_receipt(options = {})
       options[:message_id] ||= '123e71195545ad204bdd99f2070a7d86'
       options[:status] ||= "delivered"
       options[:date]   ||= "Mon Oct 11 09:21:38 UTC 2010"

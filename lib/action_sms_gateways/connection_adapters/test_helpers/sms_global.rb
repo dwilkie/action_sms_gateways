@@ -1,6 +1,6 @@
 module TestHelpers
   module SMSGlobal
-    def incoming_sms_factory_params(options = {})
+    def sample_incoming_sms(options = {})
       options[:message] ||= "Endia kasdf ofeao"
       options[:to]      ||= "61447100308"
       options[:from]    ||= "61447100399"
@@ -11,19 +11,19 @@ module TestHelpers
         "msg"=> options[:message],
         "date" => options[:date]
       }
-      params.merge!("userfield" => @config[:authentication_key]) unless options[:reply] == false
+      params.merge!("userfield" => @config[:authentication_key]) unless options[:authentic] == false
       params
     end
 
     def sample_delivery_response(options = {})
-      options[:failure] ? "ERROR: No action requested" : "OK: 0; Sent queued message ID: 86b1a945370734f4 SMSGlobalMsgID:6942744494999745"
+      options[:failed] ? "ERROR: No action requested" : "OK: 0; Sent queued message ID: 86b1a945370734f4 SMSGlobalMsgID:6942744494999745"
     end
 
     def sample_message_id
       "SMSGlobalMsgID:694274449499974"
     end
 
-    def delivery_receipt_factory_params(options = {})
+    def sample_delivery_receipt(options = {})
       options[:message_id] ||= '6942744494999745'
       options[:status] ||= 'DELIVRD'
       options[:error] ||= '000'

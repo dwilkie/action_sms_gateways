@@ -12,7 +12,7 @@ module ActionSms
           end
         end
       end
-      return ConnectionAdapters::TropoAdapter.new(config)
+      ConnectionAdapters::TropoAdapter.new(config)
     end
   end
 

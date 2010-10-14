@@ -12,7 +12,7 @@ module ActionSms
           end
         end
       end
-      return ConnectionAdapters::SMSGlobalAdapter.new(config)
+      ConnectionAdapters::SMSGlobalAdapter.new(config)
     end
   end
 
