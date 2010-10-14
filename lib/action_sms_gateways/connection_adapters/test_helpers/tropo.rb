@@ -44,11 +44,12 @@ module TestHelpers
     end
 
     def sample_delivery_response(options = {})
-      options[:failure] ? "<session><success>false</success><token></token><reason>FAILED TO ROUTE TOKEN</reason></session>" : "<session><success>true</success></session>"
+      options[:failed] ? "<session><success>false</success><token></token><reason>FAILED TO ROUTE TOKEN</reason></session>" : "<session><success>true</success></session>"
     end
 
-    def sample_message_id
-      "123e71195545ad204bdd99f2070a7d86"
+    def sample_message_id(options = {})
+      options[:message_id] ||= "123e71195545ad204bdd99f2070a7d86"
+      options[:message_id]
     end
 
     # This is here simply so the current tests pass

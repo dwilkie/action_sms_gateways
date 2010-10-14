@@ -16,11 +16,14 @@ module TestHelpers
     end
 
     def sample_delivery_response(options = {})
-      options[:failed] ? "ERROR: No action requested" : "OK: 0; Sent queued message ID: 86b1a945370734f4 SMSGlobalMsgID:6942744494999745"
+      options[:failed] ||= false
+      options[:message_id] ||= "6942744494999745"
+      options[:failed] ? "ERROR: No action requested" : "OK: 0; Sent queued message ID: 86b1a945370734f4 #{sample_message_id(:message_id => options[:message_id])}"
     end
 
-    def sample_message_id
-      "SMSGlobalMsgID:6942744494999745"
+    def sample_message_id(options = {})
+      options[:message_id] ||= "6942744494999745"
+      "SMSGlobalMsgID:#{options[:message_id]}"
     end
 
     def sample_delivery_receipt(options = {})
