@@ -26,8 +26,8 @@ module ActionSms
 
       attr_reader :service_url
 
-      SERVICE_HOST = "http://api.tropo.com/1.0"
-      SERVICE_PATH = "sessions"
+      SERVICE_HOST = "http://api.tropo.com"
+      SERVICE_PATH = "1.0/sessions"
 
       def initialize(config = {}) #:nodoc:
         @config = config.dup
