@@ -54,13 +54,13 @@ module TestHelpers
     # This is here simply so the current tests pass
     # Tropo does not *yet* send delivery receipts
     def sample_delivery_receipt(options = {})
-      options[:message_id] ||= '123e71195545ad204bdd99f2070a7d86'
+      options[:message_id] ||= "123e71195545ad204bdd99f2070a7d86"
       options[:status] ||= "delivered"
       options[:date]   ||= "Mon Oct 11 09:21:38 UTC 2010"
       {
-        'message_id'=> options[:message_id],
-        'status'=> options[:status],
-        'delivered_at'=> options[:date]
+        "message_id"=> options[:message_id],
+        "status"=> options[:status],
+        "delivered_at"=> options[:date]
       }
     end
   end

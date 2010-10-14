@@ -9,8 +9,8 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
 
 ## Configuration
 
-[SMSGlobal](link to wiki here)
-[Tropo](link to wiki here)
+* [SMSGlobal](/wiki/SMSGlobal)
+* [Tropo](/wiki/Tropo)
 
 ## Usage
 
@@ -45,9 +45,6 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
     # get message text
     message_text = sms_gateway.message_text(params)
 
-    # authenticate incoming sms (see configuration for more details)
-    sms_gateway.authenticate(params) # returns true or false
-
 ### Delivery receipts
 
     # Assume 'receipt' has the data posted back to your server as the delivery receipt
@@ -59,6 +56,22 @@ A collection of SMS Gateway Adapters for [action_sms](http://github.com/dwilkie/
 
     # get message id
     message_id = sms_gateway.message_id(receipt)
+
+### Authentication
+
+    ActionSms::Base.establish_connection(
+      :authentication_key => "my secret",
+      :use_ssl => true
+    )
+
+If you set up an: `authentication_key` in the configuration, your key will be passed back to your listener url. Using an authentication key in conjunction with a secure connection `use_ssl => true` helps protect you against someone faking incoming messages to your server. You can authenticate an incoming message as follows:
+
+    # Assume 'params' has the data posted back to your server
+
+    sms_gateway = ActionSms::Base.connection
+
+    # Removes the authentication key from 'params' and returns true or false
+    sms_gateway.authenticate(params)
 
 ### Service url
 
@@ -78,13 +91,13 @@ When you set: `:environment => "test"` in your configuration, you get some addit
     # get sample incoming SMS params
     sms_gateway.sample_incoming_sms
 
-    # get customized sample incoming SMS params
+    # get customized sample incoming SMS
     sms_gateway.sample_incoming_sms(
       :message => "hello",
       :to => "6128392323",
       :from => "61289339432",
       :date => Time.now,
-      :authentic => false          # see configuration
+      :authentic => false     # see configuration
     )
 
     # get sample delivery response
@@ -110,7 +123,7 @@ When you set: `:environment => "test"` in your configuration, you get some addit
 ## Creating your own adapter
 
 To create your own adapter all you need to do is open up the ActionSms::Base class
-and add a class method named: `my_adapter_connection` which takes a single hash argument of configuration details and returns an instance of your adapter class. For example, lets create an adapter for clickatell:
+and add a class method named: `my_adapter_connection` which takes a single hash argument of configuration details and returns an instance of your adapter class. For example, let's create an adapter for clickatell:
 
     # clickatell.rb
     require 'action_sms/connection_adapters/abstract_adapter'
@@ -131,7 +144,7 @@ and add a class method named: `my_adapter_connection` which takes a single hash 
       end
     end
 
-Take a look at the [source](lib/action_sms_gateways/connection_adapters) for more details
+Take a look at the [source](tree/master/lib/action_sms_gateways/connection_adapters) for more details
 
 ## Installation
 

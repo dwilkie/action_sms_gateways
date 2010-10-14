@@ -20,19 +20,19 @@ module TestHelpers
     end
 
     def sample_message_id
-      "SMSGlobalMsgID:694274449499974"
+      "SMSGlobalMsgID:6942744494999745"
     end
 
     def sample_delivery_receipt(options = {})
-      options[:message_id] ||= '6942744494999745'
-      options[:status] ||= 'DELIVRD'
-      options[:error] ||= '000'
-      options[:date] ||= '1005132312'
+      options[:message_id] ||= "6942744494999745"
+      options[:status] ||= "DELIVRD"
+      options[:error] ||= "000"
+      options[:date] ||= "1005132312"
       {
-        'msgid'=> options[:message_id],
-        'dlrstatus'=> options[:status],
-        'dlr_err'=> options[:error],
-        'donedate'=> options[:date]
+        "msgid"=> options[:message_id],
+        "dlrstatus"=> options[:status],
+        "dlr_err"=> options[:error],
+        "donedate"=> options[:date]
       }
     end
   end
