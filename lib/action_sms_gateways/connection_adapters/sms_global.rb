@@ -66,7 +66,7 @@ module ActionSms
         gateway_response =~ /^OK/
       end
 
-      def deliver(sms)
+      def deliver(sms, options = {})
         params = {
           :action   => 'sendsms',
           :user     => @config[:user],

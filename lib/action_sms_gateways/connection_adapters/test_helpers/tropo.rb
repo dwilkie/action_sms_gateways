@@ -64,6 +64,14 @@ module TestHelpers
         "delivered_at"=> options[:date]
       }
     end
+
+    def message_id(data)
+      data.is_a?(Hash) ? data["message_id"] : data
+    end
+
+    def status(delivery_receipt)
+      delivery_receipt["status"]
+    end
   end
 end
 

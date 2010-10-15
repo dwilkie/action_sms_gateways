@@ -8,6 +8,7 @@ module ActionSms
         if File.exists?("#{test_helper}.rb")
           require test_helper
           ConnectionAdapters::TropoAdapter.class_eval do
+            remove_method :message_id, :status
             include TestHelpers::Tropo
           end
         end
@@ -36,15 +37,12 @@ module ActionSms
         @service_url = service_uri.to_s
       end
 
-      # message_id and status are for text message delivery receipts only
-      # Tropo does not *yet* send text message delivery receipts, so these
-      # two methods are here for testing purposes
       def message_id(data)
-        data.is_a?(Hash) ? data["message_id"] : data
+        # this method is supposed to return nil
       end
 
       def status(delivery_receipt)
-        delivery_receipt["status"]
+        # this method is supposed to return nil
       end
 
       def delivery_request_successful?(gateway_response)
@@ -63,18 +61,23 @@ module ActionSms
         params.delete("authentication_key") == @config[:authentication_key]
       end
 
-      def deliver(sms)
+      def deliver(sms, options = {})
         tropo_message = Tropo::Message.new
         tropo_message.to = sms.recipient
         tropo_message.text = sms.body || ""
         tropo_message.from = sms.from if sms.respond_to?(:from)
         tropo_message.token = @config[:outgoing_token]
-        send_http_request(@service_url, tropo_message.request_xml)
+        response = send_http_request(@service_url, tropo_message.request_xml)
+        options[:filter_response] ? filter_response(response) : response
       end
 
       private
         def session(params)
           params["session"]
+        end
+
+        def filter_response(raw_response)
+          raw_response.gsub(/\<token\>\w+\<\/token\>/, "")
         end
     end
   end

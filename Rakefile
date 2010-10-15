@@ -22,7 +22,7 @@ begin
     gemspec.email = "dwilkie@gmail.com"
     gemspec.homepage = "http://github.com/dwilkie/action_sms_gateways"
     gemspec.authors = ["David Wilkie"]
-    gemspec.add_runtime_dependency "tropo_message", ">=0.0.4"
+    gemspec.add_runtime_dependency "tropo_message"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
