@@ -42,7 +42,7 @@ module ActionSms
           sms_global_message_id_prefix + message_id if message_id
         elsif data.is_a?(String)
           match = /#{sms_global_message_id_prefix}\s*(\d+)/.match(data)
-          $1
+          sms_global_message_id_prefix + $1 if $1
         end
       end
 

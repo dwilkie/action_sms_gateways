@@ -28,6 +28,7 @@ module TestHelpers
 
     def sample_delivery_receipt(options = {})
       options[:message_id] ||= "6942744494999745"
+      options[:message_id].gsub!("SMSGlobalMsgID:", "")
       options[:status] ||= "DELIVRD"
       options[:error] ||= "000"
       options[:date] ||= "1005132312"
