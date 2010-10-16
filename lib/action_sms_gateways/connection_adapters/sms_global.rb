@@ -75,8 +75,8 @@ module ActionSms
       end
 
       def authenticate(params)
-        params["userfield"] == @config[:authentication_key] ?
-          params.delete("userfield") : nil
+        params["authentication_key"] == @config[:authentication_key] ?
+          params.delete("authentication_key") : nil
       end
 
       def delivery_request_successful?(gateway_response)
@@ -88,20 +88,15 @@ module ActionSms
           :action   => 'sendsms',
           :user     => @config[:user],
           :password => @config[:password],
-          :maxsplit => @config[:maxsplit] || 19,
+          :maxsplit => @config[:maxsplit] || "19",
           :from     => sms.respond_to?(:from) ? sms.from : "reply2email",
           :to       => sms.recipient,
           :text     => (sms.body || "")
         }
-        if sms.respond_to?(:userfield)
-          userfield = sms.userfield
-        elsif @config[:authentication_key]
-          userfield = @config[:authentication_key]
-        end
         params.merge!(
-          :userfield => userfield
-        ) if userfield
-        send_http_request(@service_url, params)
+          :userfield => sms.userfield
+        ) if sms.respond_to?(:userfield)
+        send_http_request(service_url, params)
       end
     end
   end

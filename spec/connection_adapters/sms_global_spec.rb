@@ -86,10 +86,10 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
 
   describe "#authenticate" do
     let (:request_params) { {} }
-    context "the incoming message's 'userfield' value is the same as the adapter's authentication key" do
+    context "the incoming message's 'authentication_key' query parameter value is the same as the adapter's authentication key" do
       before do
         adapter.authentication_key = "my_secret_key"
-        request_params["userfield"] = "my_secret_key"
+        request_params["authentication_key"] = "my_secret_key"
       end
       it "should not be nil" do
         adapter.authenticate(request_params).should_not be_nil
@@ -99,16 +99,16 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
         request_params["userfield"].should be_nil
       end
     end
-    context "the incoming message's 'userfield' value is different from the adapter's authentication key" do
+    context "the incoming message's 'authentication_key' query parameter value is different from the adapter's authentication key" do
       before do
-        request_params["userfield"] = "invalid key"
+        request_params["authentication_key"] = "invalid_key"
       end
       it "should return nil" do
         adapter.authenticate(request_params).should be_nil
       end
       it "should not remove the key from the request params hash" do
         adapter.authenticate(request_params)
-        request_params["userfield"].should_not be_nil
+        request_params["authentication_key"].should_not be_nil
       end
     end
   end
@@ -135,17 +135,117 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
     before do
       adapter.stub!(:send_http_request)
     end
-    context "an authentication key has been set" do
-      before do
-        adapter.authentication_key = "my_secret_key"
-      end
-      context "sms responds to 'userfield'" do
-        before do
-          sms.stub!(:userfield).and_return("custom userfield")
-        end
-        it "should send the delivery request with sms' userfield" do
 
-        end
+    it "should try to send the sms with the correct 'action' value" do
+      adapter.should_receive(:send_http_request).with(
+        anything,
+        hash_including(:action => "sendsms")
+      )
+      adapter.deliver(sms)
+    end
+
+    it "should try to send the sms with the 'user' configuration value" do
+      adapter.should_receive(:send_http_request).with(
+        anything,
+        hash_including(:user)
+      )
+      adapter.deliver(sms)
+    end
+
+    it "should try to send the sms with the 'password' configuration value" do
+      adapter.should_receive(:send_http_request).with(
+        anything,
+        hash_including(:password)
+      )
+      adapter.deliver(sms)
+    end
+
+    it "should try to send the sms with the correct 'maxsplit' value" do
+      adapter.should_receive(:send_http_request).with(
+        anything,
+        hash_including(:maxsplit => "19")
+      )
+      adapter.deliver(sms)
+    end
+
+    context "sms' responds to '#from'" do
+      before do
+        sms.stub!(:from).and_return("anybody")
+      end
+      it "should try to send the sms with the result from 'sms#from'" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_including(:from => "anybody")
+        )
+        adapter.deliver(sms)
+      end
+    end
+
+    context "sms does not respond to '#from'" do
+      before do
+        sms.stub!(:respond_to?).and_return(false)
+      end
+      it "should try to send the sms with 'from' set to 'reply2email'" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_including(:from => "reply2email")
+        )
+        adapter.deliver(sms)
+      end
+    end
+
+    it "should try to send the sms with the result from 'sms#recipient'" do
+      adapter.should_receive(:send_http_request).with(
+        anything,
+        hash_including(:to)
+      )
+      adapter.deliver(sms)
+    end
+
+    context "sms#body is not nil" do
+      it "should try to send the sms with the sms' body" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_including(:text)
+        )
+        adapter.deliver(sms)
+      end
+    end
+
+    context "sms#body is nil" do
+      before do
+        sms.stub!(:body).and_return(nil)
+      end
+
+      it "should try to send the sms with blank text" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_including(:text => "")
+        )
+        adapter.deliver(sms)
+      end
+    end
+
+    context "sms responds to #userfield" do
+      it "should try to send the sms with the result from 'sms#userfield'" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_including(:userfield)
+        )
+        adapter.deliver(sms)
+      end
+    end
+
+    context "sms does not respond to #userfield" do
+      before do
+        sms.stub!(:respond_to?).and_return(false)
+      end
+      it "should try to send the sms with the 'userfield' parameter" do
+        adapter.should_receive(:send_http_request).with(
+          anything,
+          hash_not_including(:userfield)
+        )
+        adapter.deliver(sms)
       end
     end
   end
