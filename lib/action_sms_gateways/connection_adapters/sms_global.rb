@@ -23,16 +23,32 @@ module ActionSms
     class SMSGlobalAdapter < AbstractAdapter
       require 'uri'
 
-      SERVICE_HOST = "http://smsglobal.com.au"
-      SERVICE_PATH = "http-api.php"
-
-      attr_reader :service_url
+      SERVICE_URL = "http://smsglobal.com.au/http-api.php"
 
       def initialize(config = {}) #:nodoc:
-        @config = config.dup
-        service_uri = URI.join(SERVICE_HOST, SERVICE_PATH)
-        service_uri.scheme = config[:use_ssl] ? "https" : "http"
-        @service_url = service_uri.to_s
+        @config = config
+      end
+
+      def authentication_key=(value)
+        @config[:authentication_key] = value
+      end
+
+      def authenticiation_key
+        @config[:authentication_key]
+      end
+
+      def use_ssl=(value)
+        @config[:use_ssl] = value
+      end
+
+      def use_ssl
+        @config[:use_ssl]
+      end
+
+      def service_url
+        service_uri = URI.parse(SERVICE_URL)
+        service_uri.scheme = @config[:use_ssl] ? "https" : "http"
+        service_uri.to_s
       end
 
       def message_id(data)
@@ -59,7 +75,8 @@ module ActionSms
       end
 
       def authenticate(params)
-        params.delete("userfield") == @config[:authentication_key]
+        params["userfield"] == @config[:authentication_key] ?
+          params.delete("userfield") : nil
       end
 
       def delivery_request_successful?(gateway_response)
