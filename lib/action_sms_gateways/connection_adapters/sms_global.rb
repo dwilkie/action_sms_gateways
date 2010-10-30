@@ -21,67 +21,8 @@ module ActionSms
     # class.  You can use this interface directly by borrowing the gateway
     # connection from the Base with Base.connection.
     class SMSGlobalAdapter < AbstractAdapter
-      require 'uri'
 
       SERVICE_URL = "http://smsglobal.com.au/http-api.php"
-
-      def initialize(config = {}) #:nodoc:
-        @config = config
-      end
-
-      def authentication_key=(value)
-        @config[:authentication_key] = value
-      end
-
-      def authenticiation_key
-        @config[:authentication_key]
-      end
-
-      def use_ssl=(value)
-        @config[:use_ssl] = value
-      end
-
-      def use_ssl
-        @config[:use_ssl]
-      end
-
-      def service_url
-        service_uri = URI.parse(SERVICE_URL)
-        service_uri.scheme = @config[:use_ssl] ? "https" : "http"
-        service_uri.to_s
-      end
-
-      def message_id(data)
-        sms_global_message_id_prefix = "SMSGlobalMsgID:"
-        if data.is_a?(Hash)
-          message_id = data["msgid"]
-          sms_global_message_id_prefix + message_id if message_id
-        elsif data.is_a?(String)
-          match = /#{sms_global_message_id_prefix}\s*(\d+)/.match(data)
-          sms_global_message_id_prefix + $1 if $1
-        end
-      end
-
-      def status(delivery_receipt)
-        delivery_receipt["dlrstatus"]
-      end
-
-      def message_text(params)
-        params["msg"]
-      end
-
-      def sender(params)
-        params["from"]
-      end
-
-      def authenticate(params)
-        params["authentication_key"] == @config[:authentication_key] ?
-          params.delete("authentication_key") : nil
-      end
-
-      def delivery_request_successful?(gateway_response)
-        gateway_response =~ /^OK/
-      end
 
       def deliver(sms, options = {})
         params = {
@@ -97,6 +38,37 @@ module ActionSms
           :userfield => sms.userfield
         ) if sms.respond_to?(:userfield)
         send_http_request(service_url, params)
+      end
+
+      def delivery_request_successful?(gateway_response)
+        gateway_response =~ /^OK/
+      end
+
+      def message_id(data)
+        sms_global_message_id_prefix = "SMSGlobalMsgID:"
+        if data.is_a?(Hash)
+          message_id = data["msgid"]
+          sms_global_message_id_prefix + message_id if message_id
+        elsif data.is_a?(String)
+          match = /#{sms_global_message_id_prefix}\s*(\d+)/.match(data)
+          sms_global_message_id_prefix + $1 if $1
+        end
+      end
+
+      def message_text(params)
+        params["msg"]
+      end
+
+      def sender(params)
+        params["from"]
+      end
+
+      def service_url
+        super(SERVICE_URL)
+      end
+
+      def status(delivery_receipt)
+        delivery_receipt["dlrstatus"]
       end
     end
   end
