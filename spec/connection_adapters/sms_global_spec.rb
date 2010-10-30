@@ -189,6 +189,12 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
     end
   end
 
+  describe "#service_url" do
+    it "should be the SMS Global service url" do
+      adapter.service_url.should == "http://smsglobal.com.au/http-api.php"
+    end
+  end
+
   describe "#status" do
     let (:delivery_receipt) { {} }
     context "given a valid delivery receipt" do
