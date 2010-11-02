@@ -9,7 +9,7 @@ module ActionSms
           require test_helper
           ConnectionAdapters::TropoAdapter.class_eval do
             remove_method :message_id, :status
-            include TestHelpers::Tropo
+            include ActionSms::ConnectionAdapters::TestHelpers::Tropo
           end
         end
       end

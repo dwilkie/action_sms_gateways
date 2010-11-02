@@ -8,7 +8,7 @@ module ActionSms
         if File.exists?("#{test_helper}.rb")
           require test_helper
           ConnectionAdapters::SMSGlobalAdapter.class_eval do
-            include TestHelpers::SMSGlobal
+            include ActionSms::ConnectionAdapters::TestHelpers::SMSGlobal
           end
         end
       end
@@ -18,7 +18,7 @@ module ActionSms
 
   module ConnectionAdapters
     # All the concrete gateway adapters follow the interface laid down in this
-    # class.  You can use this interface directly by borrowing the gateway
+    # class. You can use this interface directly by borrowing the gateway
     # connection from the Base with Base.connection.
     class SMSGlobalAdapter < AbstractAdapter
 
