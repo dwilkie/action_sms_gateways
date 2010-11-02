@@ -9,6 +9,14 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
       adapter.stub!(:send_http_request)
     end
 
+    it "should try to send the sms to the correct url" do
+      adapter.should_receive(:send_http_request).with(
+        "http://smsglobal.com.au/http-api.php",
+        anything
+      )
+      adapter.deliver(sms)
+    end
+
     it "should try to send the sms with the correct 'action' value" do
       adapter.should_receive(:send_http_request).with(
         anything,

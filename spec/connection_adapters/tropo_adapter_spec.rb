@@ -10,6 +10,14 @@ describe ActionSms::ConnectionAdapters::TropoAdapter do
       adapter.stub!(:send_http_request).and_return(response)
     end
 
+    it "should try to send the sms to the correct url" do
+      adapter.should_receive(:send_http_request).with(
+        "http://api.tropo.com/1.0/sessions",
+        anything
+      )
+      adapter.deliver(sms)
+    end
+
     it "should try to send the sms with the 'outgoing_token' configuration value" do
       config = adapter.instance_variable_get(:@config)
       adapter.instance_variable_set(

@@ -35,7 +35,7 @@ module ActionSms
         tropo_message.text = sms.body || ""
         tropo_message.from = sms.from if sms.respond_to?(:from)
         tropo_message.token = @config[:outgoing_token]
-        response = send_http_request(@service_url, tropo_message.request_xml)
+        response = send_http_request(service_url, tropo_message.request_xml)
         options[:filter_response] ? filter_response(response) : response
       end
 
