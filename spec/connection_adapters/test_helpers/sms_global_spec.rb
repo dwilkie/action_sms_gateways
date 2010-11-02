@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
   let (:adapter_name) { "sms_global" }
-  context "adapter is not in test mode" do
+  context "is not in test mode" do
     let(:adapter) {
       ActionSms::Base.sms_global_connection(
         :adapter => adapter_name
@@ -25,7 +25,7 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
     end
   end
 
-  context "adapter is in test mode" do
+  context "is in test mode" do
     let(:adapter) {
       ActionSms::Base.sms_global_connection(
         :adapter => adapter_name,

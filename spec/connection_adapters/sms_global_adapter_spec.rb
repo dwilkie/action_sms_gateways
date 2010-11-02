@@ -153,6 +153,26 @@ describe ActionSms::ConnectionAdapters::SMSGlobalAdapter do
         end
       end
     end
+    context "argument is a Hash" do
+      context "that includes an SMSGlobal message id" do
+        it "should return the message id with the SMSGlobal prefix" do
+          adapter.message_id(
+            {
+              "msgid" => "12345"
+            }
+          ).should == "SMSGlobalMsgID:12345"
+        end
+      end
+      context "that does not include an SMSGlobal message id" do
+        it "should return nil" do
+          adapter.message_id(
+            {
+              "something" => "12345"
+            }
+          ).should be_nil
+        end
+      end
+    end
   end
 
   describe "#message_text" do

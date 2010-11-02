@@ -49,12 +49,14 @@ module ActionSms
           options[:failed] ? "<session><success>false</success><token></token><reason>FAILED TO ROUTE TOKEN</reason></session>" : "<session><success>true</success></session>"
         end
 
+        # This is here as a placeholder
+        # Tropo does not *yet* return message ids
         def sample_message_id(options = {})
           options[:message_id] ||= "123e71195545ad204bdd99f2070a7d86"
           options[:message_id]
         end
 
-        # This is here simply so the current tests pass
+        # This is here as a placeholder
         # Tropo does not *yet* send delivery receipts
         def sample_delivery_receipt(options = {})
           options[:message_id] ||= "123e71195545ad204bdd99f2070a7d86"
