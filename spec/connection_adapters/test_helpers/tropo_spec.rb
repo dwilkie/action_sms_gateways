@@ -142,6 +142,13 @@ describe ActionSms::ConnectionAdapters::TropoAdapter do
             ).should include("message_id" => "12345")
           end
         end
+        context "'error'" do
+          it "should include the option" do
+            adapter.sample_delivery_receipt(
+              :error => "some error"
+            ).should include("error" => "some error")
+          end
+        end
         context "'status'" do
           it "should include the option" do
             adapter.sample_delivery_receipt(

@@ -60,10 +60,12 @@ module ActionSms
         # Tropo does not *yet* send delivery receipts
         def sample_delivery_receipt(options = {})
           options[:message_id] ||= "123e71195545ad204bdd99f2070a7d86"
+          options[:error]  ||= "None"
           options[:status] ||= "delivered"
           options[:date]   ||= "Mon Oct 11 09:21:38 UTC 2010"
           {
             "message_id"=> options[:message_id],
+            "error" => options[:error],
             "status"=> options[:status],
             "delivered_at"=> options[:date]
           }
