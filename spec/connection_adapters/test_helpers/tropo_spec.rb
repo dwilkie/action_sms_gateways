@@ -165,26 +165,6 @@ describe ActionSms::ConnectionAdapters::TropoAdapter do
         end
       end
     end
-
-    # Overridden methods in test mode
-    describe "#message_id" do
-      context "argument is a String" do
-        it "should return the argument" do
-          adapter.message_id("12345").should == "12345"
-        end
-      end
-      context "argument is a Hash" do
-        it "should extract and return the message id from the argument" do
-          adapter.message_id({"message_id" => "12345"}).should == "12345"
-        end
-      end
-    end
-
-    describe "#status" do
-      it "should extract and return the status from the agrument" do
-        adapter.status({"status" => "no good"}).should == "no good"
-      end
-    end
   end
 end
 

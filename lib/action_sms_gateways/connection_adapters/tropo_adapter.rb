@@ -8,10 +8,6 @@ module ActionSms
         if File.exists?("#{test_helper}.rb")
           require test_helper
           ConnectionAdapters::TropoAdapter.class_eval do
-            begin
-              remove_method :message_id, :status
-            rescue
-            end
             include ActionSms::ConnectionAdapters::TestHelpers::Tropo
           end
         end
